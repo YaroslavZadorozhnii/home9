@@ -1,0 +1,43 @@
+package com.gmail.docfordja;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Copirator {
+	public Copirator() {
+
+	}
+
+	public void newCopy(File first, File second) throws Exception {
+
+		for (File file : first.listFiles()) {
+			if (file.isDirectory()) {
+				File someFile = new File(file.getAbsolutePath());
+				File newDirectory = new File(second.getAbsolutePath() + "\\" + file.getName());
+				newDirectory.mkdir();
+				for (File fil : someFile.listFiles()) {
+
+					String accept = newDirectory.getName() + "\\" + fil.getName();
+					String giveaway = fil.getAbsolutePath();
+					File f = new File(second.getAbsolutePath() + "\\" + newDirectory.getName() + "\\" + fil.getName());
+					f.createNewFile();
+					printer(giveaway, f);
+				}
+			}
+
+		}
+		System.out.println("Done!");
+	}
+
+	public void printer(String donor, File path) throws IOException {
+		Scanner scanner = new Scanner(donor);
+		FileWriter fw = new FileWriter(path);
+		String message = scanner.nextLine();
+		scanner.close();
+		fw.write(message);
+		fw.close();
+	}
+
+}
