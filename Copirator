@@ -10,8 +10,8 @@ public class Copirator {
 
 	}
 
-	public void newCopy(File first, File second) throws Exception {
-
+	public void newCopy(File first, File second, String format) throws Exception {
+        //Создает директории и файлы
 		for (File file : first.listFiles()) {
 			if (file.isDirectory()) {
 				File someFile = new File(file.getAbsolutePath());
@@ -22,15 +22,17 @@ public class Copirator {
 					String accept = newDirectory.getName() + "\\" + fil.getName();
 					String giveaway = fil.getAbsolutePath();
 					File f = new File(second.getAbsolutePath() + "\\" + newDirectory.getName() + "\\" + fil.getName());
-					f.createNewFile();
-					printer(giveaway, f);
+					if (validator(fil.getAbsolutePath(), format)) {
+						f.createNewFile();
+						printer(giveaway, f);
+					}
 				}
 			}
 
 		}
 		System.out.println("Done!");
 	}
-
+    // Чмтает и записывает в файл
 	public void printer(String donor, File path) throws IOException {
 		Scanner scanner = new Scanner(donor);
 		FileWriter fw = new FileWriter(path);
@@ -38,6 +40,27 @@ public class Copirator {
 		scanner.close();
 		fw.write(message);
 		fw.close();
+	}
+    //Проверяет соответствие файла выбранному формату
+	public boolean validator(String path, String format) {
+		int index = -1;
+		int vol = 0;
+		for (int i = 0; i < path.length(); i++) {
+			index = path.indexOf(".", index);
+			if (index > 0) {
+				vol = index;
+			}
+		}
+		String result = "";
+		for (int i = vol + 1; i < path.length(); i++) {
+			result += path.charAt(i);
+		}
+		if (result.equals(format)) {
+			return true;
+		}
+
+		return false;
+
 	}
 
 }
